@@ -1,3 +1,3 @@
-gcc -std=c11 main.c -o uniproc.out -lpthread
+gcc -std=c11 uniproctranspose.c -o uniproc.out -lpthread
 
-./uniproc.out 10000
+./uniproc.out 8 

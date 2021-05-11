@@ -12,9 +12,8 @@ void printA (int n)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			printf ("%d ", A [i][j]);
+			printf ("%d \n", A [i][j]);
 		}
-		printf ("\n");
 	}
 }
 
@@ -29,12 +28,9 @@ int main (int argc, char** argv)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			A [i][j] = i*n+j;//rand () % 500;
+			A [i][j] = i*n+j;
 		}
 	}
-	/*
-	 * printA (n);
-	printf ("##################\n\n");*/
 	
 	gettimeofday(&start, NULL);
 	
@@ -49,9 +45,8 @@ int main (int argc, char** argv)
 	}
 	
 	gettimeofday(&end, NULL);
-	/*
-	printA (n);
-	*/
+	if (n == 8) printA (n);
+	
 	printf ("%.8f \n",
 	        (double)((end.tv_sec * 1000000 + end.tv_usec) -
 	                 (start.tv_sec * 1000000 + start.tv_usec))/1000000.0);
