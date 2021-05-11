@@ -18,9 +18,9 @@ void printA (int n)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			printf ("%d ", A [i][j]);
+			printf ("%d \n", A [i][j]);
 		}
-		printf ("\n");
+		//printf ("\n");
 	}
 }
 
