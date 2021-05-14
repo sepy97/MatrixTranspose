@@ -6,6 +6,7 @@
 
 int A [10000][10000];
 
+//printing out a matrix for debugging purposes
 void printA (int n)
 {
 	for (int i = 0; i < n; i++)
@@ -19,11 +20,13 @@ void printA (int n)
 
 int main (int argc, char** argv)
 {
+	//used for timing
 	struct timeval start, end;
 	
-	srand (time (NULL));
-	int n = 32;
-	if (argc > 1) n = atoi (argv [1]);
+	int n = 8;
+	if (argc > 1) n = atoi (argv [1]);  //size of a matrix taken from a command line argument
+	
+	//matrix initialization
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -32,8 +35,9 @@ int main (int argc, char** argv)
 		}
 	}
 	
+	//time measurement
 	gettimeofday(&start, NULL);
-	
+	//transpose matrix
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = i+1; j < n; j++)
@@ -43,8 +47,9 @@ int main (int argc, char** argv)
 			A [j][i] = temp;
 		}
 	}
-	
+	//time measurement
 	gettimeofday(&end, NULL);
+	//printing out matrix for a debugging purposes
 	if (n == 8) printA (n);
 	
 	printf ("%.8f \n",

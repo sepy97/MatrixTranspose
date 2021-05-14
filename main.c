@@ -10,7 +10,7 @@ pthread_mutex_t lock;
 
 struct thread_args {
 	int size;      //id of a current thread
-//	int numOfThreads;  //total number of threads
+	int delta;  //total number of threads
 };
 void printA (int n)
 {
@@ -27,22 +27,29 @@ void printA (int n)
 void* transpose (void* arg)
 {
 	int n = ((struct thread_args *) arg)->size;
+	int delta = ((struct thread_args *) arg)->delta;
 	int num = 0;
 	while (sharedCounter < n*n)
 	{
 		pthread_mutex_lock (&lock);
 		num = sharedCounter;
-		sharedCounter++;
+		sharedCounter += delta;
 		pthread_mutex_unlock (&lock);
-		
-		int i = num / n;
-		int j = num % n;
-		if (j > i)
+		int limit = num + delta;
+		while (num < limit && num < n*n)
 		{
-			//printf ("%d %d \n", i, j);
-			int temp = A[i][j];
-			A[i][j] = A[j][i];
-			A[j][i] = temp;
+			
+			int i = num / n;
+			int j = num % n;
+			if (j > i)
+			{
+				//printf ("%d %d \n", i, j);
+				int temp = A[i][j];
+				A[i][j] = A[j][i];
+				A[j][i] = temp;
+			}
+			
+			num++;
 		}
 	}
 }
@@ -52,7 +59,7 @@ int main (int argc, char** argv)
 	struct timeval start, end;
 	
 	srand (time (NULL));
-	int n = 148;
+	int n = 128;
 	if (argc > 1) n = atoi (argv [1]);
 	for (int i = 0; i < n; i++)
 	{
@@ -62,12 +69,15 @@ int main (int argc, char** argv)
 		}
 	}
 	
-	int t = 16;
+	int t = 2;
 	if (argc > 2) t = atoi (argv[2]);
 	pthread_t my_thread[t+1];
 	pthread_mutex_init(&lock, NULL);
 	struct thread_args* thr = (struct thread_args*) malloc (sizeof (struct thread_args));
 	thr->size = n;
+	int delta = 4;
+	if (argc > 3) delta = atoi (argv [3]);
+	thr->delta = delta;
 	
 	gettimeofday(&start, NULL);
 	for (int id = 1; id <= t; id++)
